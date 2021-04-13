@@ -163,11 +163,9 @@ def clean(path, new_path):
         try:
             os.remove(path)
         except IOError:
-            print("Error: 删除文件没有找到文件失败 %s" % path)
             logger.error("Error: 没有找到文件或读取文件失败 %s " % path)
     if os.path.exists(new_path):
         try:
             os.remove(new_path)
         except IOError:
-            print("Error: 删除文件没有找到文件失败 %s" % new_path)
             logger.error("Error: 没有找到文件或读取文件失败 %s " % new_path)
