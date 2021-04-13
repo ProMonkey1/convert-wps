@@ -141,13 +141,14 @@ async def convert(request: Request, file: UploadFile = File(...), fileType: str 
             logger.info("文件转换耗时%s：%s" % (file_name, convertTime))
             doc.Close(wpsapi.wdDoNotSaveChanges)
             start_returnTime = time.time()
-            return StreamingResponse(open(new_path,'rb'), media_type= media_types[fileType])
+            new_file = open(new_path,'rb')
+            openTime = time.time() - start_returnTime
+            logger.info("打开文件耗时%s" % openTime)
+            return StreamingResponse(new_file, media_type= media_types[fileType])
         except ConvertException as e:
-            print("文件转换异常:" + str(e))
             logger.error("文件转换异常:" + str(e))
             return JSONResponse(status_code=500, content = str(e))
         except Exception as e:
-            print("文件转换异常:" + str(e))
             logger.error("文件转换异常:" + str(e))
             return JSONResponse(status_code=500, content = str(e))
         finally:
